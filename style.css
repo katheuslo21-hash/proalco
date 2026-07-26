@@ -1,0 +1,276 @@
+/* ============================================================
+   PROALCO — Sistema de diseño compartido
+   Estética: Apple / Tesla / Siemens — premium, clara, acero cepillado
+   ============================================================ */
+
+:root{
+  --cobalt:#0B3D91;
+  --steel:#1E6FB8;
+  --skyblue:#4FA3E3;
+  --metal:#8A9BA8;
+  --ink:#111111;
+  --white:#FFFFFF;
+  --paper:#F7F9FB;
+  --line:#E4E8EC;
+  --darknavy:#0A1A2E;
+  --darknavy2:#0F2444;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  color:var(--ink);
+  background:var(--white);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.font-display{font-family:'Montserrat',sans-serif;}
+img{max-width:100%; display:block;}
+a{color:inherit; text-decoration:none;}
+::selection{background:var(--steel); color:#fff;}
+
+.wrap{max-width:1360px; margin:0 auto; padding:0 28px;}
+@media (max-width:640px){ .wrap{padding:0 20px;} }
+
+.eyebrow{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:.72rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--steel);
+}
+.eyebrow::before{content:''; width:26px; height:2px; background:var(--steel); display:inline-block;}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  font-family:'Montserrat',sans-serif; font-weight:700; font-size:.82rem; letter-spacing:.03em;
+  padding:16px 34px; border-radius:999px; cursor:pointer; border:none;
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease;
+}
+.btn-primary{
+  background:linear-gradient(120deg, var(--steel), var(--cobalt));
+  color:#fff;
+  box-shadow:0 14px 30px -12px rgba(11,61,145,.45);
+  position:relative; overflow:hidden;
+}
+.btn-primary::after{
+  content:''; position:absolute; top:0; left:-75%; width:50%; height:100%;
+  background:linear-gradient(100deg, transparent, rgba(255,255,255,.5), transparent);
+  transform:skewX(-20deg);
+}
+.btn-primary:hover::after{ animation:shine .9s ease forwards; }
+@keyframes shine{ to{ left:130%; } }
+.btn-primary:hover{ transform:translateY(-3px); box-shadow:0 18px 36px -12px rgba(11,61,145,.55); }
+
+.btn-outline-dark{ border:1.5px solid rgba(17,17,17,.18); color:var(--ink); background:transparent; }
+.btn-outline-dark:hover{ border-color:var(--cobalt); color:var(--cobalt); background:rgba(11,61,145,.04); }
+
+.btn-outline-light{ border:1.5px solid rgba(255,255,255,.35); color:#fff; background:transparent; }
+.btn-outline-light:hover{ border-color:#fff; background:rgba(255,255,255,.1); }
+
+/* ---------- Navbar ---------- */
+#navbar{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:22px 0;
+  transition:padding .35s ease, background .35s ease, box-shadow .35s ease, backdrop-filter .35s ease;
+}
+#navbar .nav-inner{
+  display:flex; align-items:center; justify-content:space-between;
+}
+#navbar.scrolled{
+  padding:12px 0;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(16px) saturate(160%);
+  -webkit-backdrop-filter:blur(16px) saturate(160%);
+  box-shadow:0 1px 0 rgba(17,17,17,.06), 0 12px 30px -20px rgba(17,17,17,.15);
+}
+.nav-logo{ display:flex; align-items:center; gap:12px; }
+.nav-logo img{ height:38px; width:auto; transition:height .35s ease; }
+#navbar.scrolled .nav-logo img{ height:32px; }
+
+.nav-links{ display:flex; align-items:center; gap:34px; }
+.nav-links a{
+  font-family:'Montserrat',sans-serif; font-weight:600; font-size:.78rem; letter-spacing:.04em;
+  color:var(--ink); text-transform:uppercase; position:relative; padding-bottom:4px;
+}
+.nav-links a::after{
+  content:''; position:absolute; left:0; bottom:0; width:0; height:2px; background:var(--cobalt);
+  transition:width .25s ease;
+}
+.nav-links a:hover::after, .nav-links a.active::after{ width:100%; }
+.nav-links a.active{ color:var(--cobalt); }
+
+#navbar.nav-home .nav-links a{ color:#fff; }
+#navbar.nav-home .nav-links a::after{ background:#fff; }
+#navbar.nav-home.scrolled .nav-links a{ color:var(--ink); }
+#navbar.nav-home.scrolled .nav-links a::after{ background:var(--cobalt); }
+/* logo se muestra siempre a color, sin filtro */
+
+.menu-toggle{ display:none; color:var(--ink); }
+#navbar.nav-home:not(.scrolled) .menu-toggle{ color:#fff; }
+@media (max-width:960px){
+  .nav-links{ display:none; }
+  .menu-toggle{ display:flex; }
+}
+
+#mobileMenu{
+  position:fixed; inset:0; background:var(--darknavy); z-index:200;
+  display:flex; flex-direction:column; padding:28px;
+  transform:translateY(-100%); transition:transform .4s cubic-bezier(.16,.8,.24,1);
+}
+#mobileMenu.open{ transform:translateY(0); }
+#mobileMenu a{
+  color:#fff; font-family:'Montserrat',sans-serif; font-weight:700; font-size:1.5rem;
+  padding:16px 0; border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+/* ---------- Reveal on scroll ---------- */
+.reveal{ opacity:0; transform:translateY(32px); transition:opacity .9s cubic-bezier(.16,.8,.24,1), transform .9s cubic-bezier(.16,.8,.24,1); }
+.reveal.is-visible{ opacity:1; transform:translateY(0); }
+.reveal-zoom{ opacity:0; transform:scale(.92); transition:opacity .9s ease, transform .9s cubic-bezier(.16,.8,.24,1); }
+.reveal-zoom.is-visible{ opacity:1; transform:scale(1); }
+
+/* ---------- Section paddings ---------- */
+.section{ padding:110px 0; }
+.section-sm{ padding:70px 0; }
+@media (max-width:768px){ .section{ padding:70px 0; } }
+
+.bg-paper{ background:var(--paper); }
+.bg-navy{ background:linear-gradient(160deg, var(--darknavy), var(--darknavy2)); color:#fff; }
+.bg-navy .eyebrow{ color:var(--skyblue); }
+.bg-navy .eyebrow::before{ background:var(--skyblue); }
+
+/* ---------- Glass card ---------- */
+.glass-card{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border-radius:20px;
+}
+
+/* ---------- Brushed steel plate (signature) ---------- */
+.plate{
+  position:relative; border-radius:20px;
+  background:
+    repeating-linear-gradient(100deg, rgba(255,255,255,.06) 0px, rgba(255,255,255,.06) 1px, transparent 1px, transparent 3px),
+    linear-gradient(155deg, #3c4550 0%, #2a323c 26%, #57626e 52%, #2a323c 76%, #3c4550 100%);
+  box-shadow:0 1px 0 rgba(255,255,255,.18) inset, 0 -1px 0 rgba(0,0,0,.4) inset, 0 26px 50px -20px rgba(0,0,0,.5);
+  border:1px solid rgba(255,255,255,.08);
+}
+.plate::before{
+  content:''; position:absolute; inset:0; border-radius:20px;
+  background:linear-gradient(120deg, rgba(255,255,255,.18), transparent 42%);
+  pointer-events:none;
+}
+.rivet{
+  position:absolute; width:9px; height:9px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #eef1f4, #838a92 60%, #4c525a 100%);
+  box-shadow:0 1px 2px rgba(0,0,0,.6);
+}
+
+/* ---------- Premium hover card ---------- */
+.hover-card{ transition:transform .45s cubic-bezier(.16,.8,.24,1), box-shadow .45s ease; }
+.hover-card:hover{ transform:translateY(-10px); box-shadow:0 30px 60px -24px rgba(11,61,145,.28); }
+
+/* ---------- Counters ---------- */
+.counter-num{ font-family:'Montserrat',sans-serif; font-weight:800; font-size:3rem; }
+
+/* ---------- Timeline ---------- */
+.timeline-line{
+  position:absolute; left:24px; top:0; bottom:0; width:2px;
+  background:linear-gradient(var(--line), var(--line));
+}
+@media (min-width:900px){
+  .timeline-line{ left:50%; transform:translateX(-50%); }
+}
+
+/* ---------- Footer ---------- */
+footer{ background:var(--darknavy); color:#c9d2dd; }
+footer a:hover{ color:#fff; }
+
+/* ---------- WhatsApp float ---------- */
+.wa-float{
+  position:fixed; bottom:26px; right:26px; z-index:90;
+  width:60px; height:60px; border-radius:50%;
+  background:#25D366; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 12px 28px -8px rgba(37,211,102,.55);
+  animation:waring 2.6s infinite;
+}
+@keyframes waring{
+  0%{ box-shadow:0 0 0 0 rgba(37,211,102,.5), 0 12px 28px -8px rgba(37,211,102,.55); }
+  70%{ box-shadow:0 0 0 16px rgba(37,211,102,0), 0 12px 28px -8px rgba(37,211,102,.55); }
+  100%{ box-shadow:0 0 0 0 rgba(37,211,102,0), 0 12px 28px -8px rgba(37,211,102,.55); }
+}
+
+/* ---------- Page hero (subpages) ---------- */
+.page-hero{
+  background:linear-gradient(160deg, var(--darknavy), var(--darknavy2));
+  color:#fff; padding:200px 0 90px;
+}
+
+/* ---------- Utility ---------- */
+.text-metal{ color:var(--metal); }
+.text-steel{ color:var(--steel); }
+.grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:60px; }
+.grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+.grid-4{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+@media (max-width:960px){
+  .grid-2{ grid-template-columns:1fr; gap:40px; }
+  .grid-3{ grid-template-columns:1fr; }
+  .grid-4{ grid-template-columns:1fr 1fr; }
+  .footer-grid{ grid-template-columns:1fr !important; gap:36px !important; }
+}
+@media (max-width:560px){ .grid-4{ grid-template-columns:1fr; } }
+
+/* ---------- Nav activa por scroll-spy ---------- */
+.nav-links a.in-view{ color:var(--cobalt); }
+.nav-links a.in-view::after{ width:100%; }
+#navbar.nav-home:not(.scrolled) .nav-links a.in-view{ color:var(--skyblue); }
+#navbar.nav-home:not(.scrolled) .nav-links a.in-view::after{ background:var(--skyblue); }
+
+/* ---------- Iconos de sector (reemplazo de emojis) ---------- */
+.sector-icon{
+  width:54px; height:54px; border-radius:14px;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.25);
+  backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* ---------- Caption en galeria al hover ---------- */
+.gallery-item{ position:relative; }
+.gallery-item .g-caption{
+  position:absolute; left:0; right:0; bottom:0; padding:14px 16px;
+  background:linear-gradient(0deg, rgba(10,26,46,.92), transparent);
+  color:#fff; font-family:'Montserrat',sans-serif; font-weight:600; font-size:.8rem;
+  opacity:0; transform:translateY(8px);
+  transition:opacity .3s ease, transform .3s ease;
+  text-align:left;
+}
+.gallery-item:hover .g-caption{ opacity:1; transform:translateY(0); }
+
+/* ---------- Tarjetas "Por que PROALCO" con contenedor ---------- */
+.why-card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:16px; padding:24px;
+  transition:background .3s ease, transform .3s ease, border-color .3s ease;
+}
+.why-card:hover{ background:rgba(255,255,255,.09); transform:translateY(-4px); border-color:rgba(79,163,227,.4); }
+
+/* ---------- Trust strip del hero ---------- */
+.trust-strip{
+  display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:34px;
+}
+.trust-chip{
+  font-family:'Montserrat',sans-serif; font-weight:600; font-size:.72rem; letter-spacing:.05em;
+  color:#C9D2DD; border:1px solid rgba(255,255,255,.18); border-radius:999px; padding:8px 18px;
+  background:rgba(255,255,255,.04);
+}
+
+@media (prefers-reduced-motion: reduce){
+  .reveal, .reveal-zoom{ transition:none; }
+  .wa-float{ animation:none; }
+}
